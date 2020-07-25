@@ -22,7 +22,7 @@ int sumAll(char *fname, int n, int nums[]);//func1: Tong - Ha
 int numsofOdd(char *fname, int n, int nums[]);//func2: So Le - Ha
 int numsofEven(char *fname, int n, int nums[]);//func3: So Chan - Ha
 int averageAll(char *fname, int n, int nums[]);//func4: Trung binh cong -Ha
-void songuyento(char *fname, int n, int nums[]);//func5: So nguyen to- Cam------------------------
+int songuyento(char *fname, int n, int nums[]);//func5: So nguyen to- Cam------------------------
 void sortA(int nums[25],int l,int r);//func6: Sort Ascending-done (Sort tang) - Cam---------------
 void sortD(int nums[25],int l,int r);//func7: Sort Decreasing-done (Sort giam) - Cam-------------------
 void searchP(char *fname, int n, int nums[], int key);// func8: Search Position(s) of 1 num-Quan
@@ -188,8 +188,8 @@ void sortD(int nums[25],int l,int r){
     }
 }
 
-void songuyento(char *fname, int n, int nums[]){
-    int c = sntf(n,nums);
+int songuyento(char *fname, int n, int nums[]){
+    int count=0, c = sntf(n,nums);
     FILE* f = fopen("log.txt", "a");
     fprintf(f,"Find ""snt"" from list; \n");
     printf(f,"Find ""snt"" from list; \n");
@@ -197,9 +197,11 @@ void songuyento(char *fname, int n, int nums[]){
     else
         for (int i=0; i<n; i++ ){
             if (snt[nums[i]]==1){
+                count++;
                 printf("%d(Pos: %d)\n", nums[i], i);
                 fprintf(f,"%d(Pos: %d)\n", nums[i], i);
             }
         }
     fclose(f);
+    return count;
 }
