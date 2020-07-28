@@ -212,7 +212,7 @@ int main(){
     fflush(stdin);
     scanf("%c", &save);
     if (save=='Y' || save == 'y') update(inp, n, nums);
-    else fprintf(f,"No_save_file!!!");
+    else fprintf(f,"No_save_file!!!\n");
     fclose(f);
     system("cls");
     gotoxy(50, 13);
