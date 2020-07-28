@@ -12,6 +12,12 @@ int snt[100000];
 void menu(); // menu
 void init();
 
+int emptyL(int n){
+    if (n==0) {
+        printf("Warning: File is NULL. Pls check\n--\a\n");
+        return 0;
+    } else return 1;
+}
 void interupt(){
     printf("Press Enter to continue...");
     while (getchar()==1); getchar();
@@ -36,7 +42,7 @@ void inputdata(int *n,int nums[]);//--------------------------------------------
 void getData(char* fname,int *n,int nums[]);//default-----------------------------------------0
 void update(char *fname, int n, int nums[]);//default-----------------------------------------0
 int sumAll(int n, int nums[]);//Tong - Ha//---------------------------------------------------3
-int numsofOdd(int n, int nums[]);// So Le - Ha------------------------------------------------10
+int numsofOdd(int n, int nums[],int* akq);// So Le - Ha------------------------------------------------10
 double averageAll(int n, int nums[]);//Trung binh cong -Ha------------------------------------9
 int songuyento(int n, int nums[]);//So nguyen to- Cam-----------------------------------------11
 void sortA(int nums[25],int l,int r);//Sort Ascending-done (Sort tang) - Cam------------------7
@@ -48,6 +54,7 @@ void addNum(int *n, int nums[], int pos, int x);//Add the num(s)-Quan-----------
 
 int main(){
     ShowWindow(GetConsoleWindow(),SW_MAXIMIZE);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),BACKGROUND_GREEN|BACKGROUND_BLUE|BACKGROUND_RED);
     FILE* f = fopen("log.txt", "a");
     time_t rawtime;
     struct tm * timeinfo;
@@ -73,15 +80,22 @@ int main(){
             inputdata(&n, nums);
             break;
         case 2:
+            emptyL(n);
             print(n, nums);
+            fprintf(f,"Have %d nums: ", n);
+            for(int i=0; i<n; i++){
+                fprintf(f,"%-5d", nums[i]);
+            }
+            fprintf(f,"\n");
             break;
         case 3:
+            emptyL(n);
             resinINT = sumAll(n, nums);
             printf("Result is %d\n", resinINT);
             fprintf(f,"Result is %d\n", resinINT);
             break;   
         case 4:
-            
+            if (emptyL(n)==1){
             printf("Nhap so muon chen: ");
             fflush(stdin);
             scanf("%d", &x);
@@ -93,40 +107,88 @@ int main(){
             } while (pos>n||pos<0);
             addNum(&n, nums, pos, x);
             printf("Done!\n");
+            fprintf(f,"Done!\n");
+            }
             break;   
         case 5:
-            do{
-                printf("Nhap vi tri muon xoa: ");
-                fflush(stdin);
-                scanf("%d", &pos);
-                if (pos>n||pos<0) printf("Yeu cau nhap lai\n");
-            } while (pos>n||pos<0);
-            rmNum(&n, nums, pos);
+            if (emptyL(n)==1){
+                do{
+                    printf("Nhap vi tri muon xoa: ");
+                    fflush(stdin);
+                    scanf("%d", &pos);
+                    if (pos>n||pos<0) printf("Yeu cau nhap lai\n");
+                } while (pos>n||pos<0);
+                rmNum(&n, nums, pos);
+                printf("Done!\n");
+                fprintf(f, "Remove %d from %d\n", nums[pos], pos);
+            }
             break;   
         case 6:
-            printf("So nguyen x can tim la: ");
-            fflush(stdin);
-            scanf("%d", &x);
-            searchP(n,nums,x);
+            if (emptyL(n)==1){
+                printf("So nguyen x can tim la: ");
+                fflush(stdin);
+                scanf("%d", &x);
+                int res = searchP(n,nums,x);
+                if (res >=0 ) {
+                    fprintf(f, "Position of X is %d!\n", res+1);
+                    printf("Position of X is %d!\n", res+1);
+                }
+                else {
+                    printf("No exist!\n");
+                    fprintf(f,"No exist!\n");
+                }
+            }
             break;   
         case 7:
-            sortA(nums, 0, n-1);
-            printf("Done!\n");
+            if (emptyL(n)==1){
+                sortA(nums, 0, n-1);
+                printf("Done!\n");
+                fprintf(f,"Done!\n");
+            }
             break;   
         case 8:
-            sortD(nums, 0, n-1);
-            printf("Done!\n");
+            if (emptyL(n)==1){
+                sortD(nums, 0, n-1);
+                printf("Done!\n");
+                fprintf(f,"Done!\n");
+            }
             break;   
         case 9:
-            resinDOU = averageAll(n, nums);
-            printf("Result is %0.4lf\n", resinDOU);
-            fprintf(f,"Result is %0.4lf\n", resinDOU);
+            if (emptyL(n)==1){
+                resinDOU = averageAll(n, nums);
+                printf("Result is %0.4lf\n", resinDOU);
+                fprintf(f,"Result is %0.4lf\n", resinDOU);
+            }
             break;    
         case 10:
-            numsofOdd(n,nums);
+            if (emptyL(n)==1){
+                int a[1000];
+                int count = numsofOdd(n,nums,a); 
+                printf("Have %d odd(s) ", count);
+                for (int e = 0; e< count ; e++) printf("%d ", nums[a[e]]);
+                printf("\n");
+                for (int e = 0; e< count ; e++) fprintf(f, "%d ", nums[a[e]]);
+                fprintf(f, "\n");
+            }
             break;
         case 11:
-            songuyento(n,nums);
+            if (emptyL(n)==1){
+                printf("Start to find primes from list; \n");
+                int count = songuyento(n,nums);
+                if (count ==0) {
+                    printf("None!\n");
+                    fprintf(f,"Done!\n");
+                }else {
+                    printf("Have %d num(s) is prime\n",count);
+                    fprintf(f,"Have %d num(s) is prime\n",count);
+                    for (int i=0; i<n; i++ ){
+                        if (snt[nums[i]]==1){
+                            printf("%d(Pos: %d)\n", nums[i], i);
+                            fprintf(f,"%d(Pos: %d)\n", nums[i], i);
+                        }     
+                    }
+                }
+            }
             break;  
         default:
             break;
@@ -138,6 +200,7 @@ int main(){
     fflush(stdin);
     scanf("%c", &save);
     if (save=='Y' || save == 'y') update(inp, n, nums);
+    else fprintf(f,"No_save_file!!!");
     fclose(f);
     system("cls");
     gotoxy(50, 13);
@@ -274,13 +337,12 @@ void sortD(int nums[25],int l,int r){
 
 int songuyento(int n, int nums[]){
     int count=0, c = sntf(n,nums);  
-    printf("Find ""snt"" from list; \n");
-    if (c<=-1) printf("None!\n");
+    if (c<=-1) return 0; 
     else
         for (int i=0; i<n; i++ ){
             if (snt[nums[i]]==1){
                 count++;
-                printf("%d(Pos: %d)\n", nums[i], i);
+                //printf("%d(Pos: %d)\n", nums[i], i);
             }
         }
     return count;
@@ -292,16 +354,13 @@ int sumAll(int n, int* nums){
     return s;
 }
 
-int numsofOdd(int n, int nums[]){
+int numsofOdd(int n, int nums[], int* akq){
     int count=0, a[1000];
     for (int i=0; i<n; i++ ){
         if (nums[i]%2==1){
-            a[count++]=i;
+            akq[count++]=i;
         } 
     }
-    printf("Have %d odd(s): ", count);
-    for (int e = 0; e< count ; e++) printf("%d ", nums[a[e]]);
-    printf("\n");
     return count;
 }
 
@@ -312,11 +371,9 @@ double averageAll(int n, int nums[]){
 int searchP(int n, int nums[], int x){
     for(int i=0; i<n; i++){
         if(nums[i]==x)  {
-            printf("Position of X is %d!\n", i+1);
             return i;
         }
     }
-    printf("No exist!\n");
     return -1;
 }
 
@@ -344,5 +401,4 @@ void addNum(int *n, int nums[], int pos, int x){
         nums[i] = nums[i-1];
     }
     nums[pos-1]=x;
-    printf("Done!\n");
 }
