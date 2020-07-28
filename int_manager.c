@@ -12,6 +12,13 @@ int snt[100000];
 void menu(); // menu
 void init();
 
+void printxy(int n, int nums[]){
+    int i;
+    printf("Have %d nums: ", n);
+    for(i=0; i<n; i++){
+        printf("%-5d", nums[i]);
+    }
+}
 int emptyL(int n){
     if (n==0) {
         printf("Warning: File is NULL. Pls check\n--\a\n");
@@ -61,7 +68,7 @@ int main(){
     time (&rawtime);
     timeinfo = localtime (&rawtime);
     fprintf(f, "Time when use Program: %s", asctime(timeinfo));
-    int n=0,choose=0, resinINT;
+    int n=0,choose=0, resinINT, showL=0;
     double resinDOU;
     int x, pos;
     char inp[] = "database.txt", save;
@@ -70,7 +77,11 @@ int main(){
     do
     {
         system("cls");
-        menu();
+        if (showL>0) {
+            gotoxy(50,3);
+            printxy(n,nums);
+        }
+        menu(showL);
         init();
         fflush(stdin);
         scanf("%d",&choose);
@@ -81,7 +92,8 @@ int main(){
             break;
         case 2:
             emptyL(n);
-            print(n, nums);
+            if (showL==0) showL=1;
+            else showL=0;
             fprintf(f,"Have %d nums: ", n);
             for(int i=0; i<n; i++){
                 fprintf(f,"%-5d", nums[i]);
@@ -220,13 +232,14 @@ void init(){
         }
     }
 }
-void menu(){
+void menu(int showL){
     gotoxy(23, 1);
     printf("%s\n","----------------------PROGRAM CONTROL LIST OF NUMBERS----------------------");
     gotoxy(23, 2);
     printf("%s\n","|| 1.Input data from keyboard");
     gotoxy(23, 3);
-    printf("%s\n","|| 2.Print to Screen");
+    if (showL==0) printf("%s\n","|| 2.[ON]Print to Screen");
+    else printf("%s\n","|| 2.[OFF]Print to Screen");
     gotoxy(23, 4);
     printf("%s\n","|| 3.Sum of All");
     gotoxy(23, 5);
