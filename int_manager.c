@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <windows.h>
+#include<stdlib.h>
 #include <time.h>
+#include <string.h>
 
 int snt[100000];
 
@@ -8,6 +11,19 @@ int snt[100000];
 //"r+" = "w+" = write + read
 void menu(); // menu
 void init();
+
+void interupt(){
+    printf("Press Enter to continue...");
+    while (getchar()==1); getchar();
+}
+
+void gotoxy(int x, int y){
+  static HANDLE h = NULL;  
+  if(!h)
+    h = GetStdHandle(STD_OUTPUT_HANDLE);
+  COORD c = { x, y };  
+  SetConsoleCursorPosition(h,c);
+}
 
 int sntf(int n, int nums[]){
     for (int i=0; i<n; i++ ){
@@ -31,6 +47,7 @@ void rmNum(int *n, int nums[], int key);//Remove the number(s)-Quan-------------
 void addNum(int *n, int nums[], int pos, int x);//Add the num(s)-Quan-------------------------4
 
 int main(){
+    ShowWindow(GetConsoleWindow(),SW_MAXIMIZE);
     FILE* f = fopen("log.txt", "a");
     time_t rawtime;
     struct tm * timeinfo;
@@ -45,6 +62,7 @@ int main(){
     getData(inp, &n, nums);
     do
     {
+        system("cls");
         menu();
         init();
         fflush(stdin);
@@ -113,12 +131,16 @@ int main(){
         default:
             break;
         }
+        if (choose>0 && choose<12) interupt();
     } while (choose>0 && choose<12);
+    gotoxy(27, 16);
     printf("Do you want to save ?(Y/n); ");
     fflush(stdin);
     scanf("%c", &save);
     if (save=='Y' || save == 'y') update(inp, n, nums);
     fclose(f);
+    system("cls");
+    gotoxy(50, 13);
     printf("Have a nice day!");
     while (getchar()==1); getchar();
     return 0 ;
@@ -136,8 +158,36 @@ void init(){
     }
 }
 void menu(){
-    printf("----------------------PROGRAM CONTROL LIST OF NUMBERS----------------------\n");
-    printf("1.Input data from File\n2.Print to Screen\n3.Sum of All\n4.Add a number\n5.Remove a number\n6.Search Position of number\n7.Sort Ascending\n8.Sort Decreasing\n9.Average of All\n10.Num of Odds\n11.Num of primes\n12.Exit.\nChoose: ");
+    gotoxy(23, 1);
+    printf("%s\n","----------------------PROGRAM CONTROL LIST OF NUMBERS----------------------");
+    gotoxy(23, 2);
+    printf("%s\n","|| 1.Input data from keyboard");
+    gotoxy(23, 3);
+    printf("%s\n","|| 2.Print to Screen");
+    gotoxy(23, 4);
+    printf("%s\n","|| 3.Sum of All");
+    gotoxy(23, 5);
+    printf("%s\n","|| 4.Add a number");
+    gotoxy(23, 6);
+    printf("%s\n","|| 5.Remove a number");
+    gotoxy(23, 7);
+    printf("%s\n","|| 6.Search Position of number");
+    gotoxy(23, 8);
+    printf("%s\n","|| 7.Sort Ascending\n");
+    gotoxy(23, 9);
+    printf("%s\n","|| 8.Sort Decreasing");
+    gotoxy(23, 10);
+    printf("%s\n","|| 9.Average of All");
+    gotoxy(23, 11);
+    printf("%s\n","|| 10.Num of Odds");
+    gotoxy(23, 12);
+    printf("%s\n","|| 11.Num of primes");
+    gotoxy(23, 13);
+    printf("%s\n","|| 12.Exit.");
+    gotoxy(23, 14);
+    printf("%s\n","---------------------------------------------------------------------------");
+    gotoxy(23+10, 15);
+    printf("%s","Choose: ");
 }
 
 void getData(char* fname,int *n, int nums[]){
@@ -159,17 +209,17 @@ void update(char* fname,int n, int nums[]){
 
 void inputdata(int *n,int nums[]){
     int ch, n1, i=(*n);
-    printf("1.Input from start\n2.Input data continue\nChoose; ");
+    printf("  1.Input from start\n  2.Input data continue\n  Choose; ");
     fflush(stdin);
     scanf("%d", &ch);
     if (ch==1) (i) = 0;
-    printf("Input n: ");
+    printf("    Input n: ");
     fflush(stdin);
     scanf("%d", &n1);
     (*n) = i+ n1;
     for (int j=i; j < i+n1; j++){
         fflush(stdin);
-        printf("Num %d(th): ", j+1);
+        printf("    Num %d(th): ", j+1);
         scanf("%d", &nums[j]);
     }
     printf("Done!\n");

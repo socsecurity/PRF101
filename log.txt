@@ -7,3 +7,23 @@ Sun Jul 26 16:20:38 2020
 -----------Choosen: 3
 Result is 15
 Choosen: 12
+Time when use Program: Tue Jul 28 06:43:55 2020
+Choosen: 12
+Time when use Program: Tue Jul 28 06:44:37 2020
+Choosen: 1
+Choosen: 2
+Choosen: 12
+Time when use Program: Tue Jul 28 06:52:17 2020
+Choosen: 12
+Time when use Program: Tue Jul 28 06:58:09 2020
+Choosen: 12
+Time when use Program: Tue Jul 28 07:05:55 2020
+Choosen: 12
+Time when use Program: Tue Jul 28 07:16:30 2020
+Choosen: 12
+Time when use Program: Tue Jul 28 07:17:22 2020
+Choosen: 12
+Time when use Program: Tue Jul 28 07:17:46 2020
+Choosen: 12
+Time when use Program: Tue Jul 28 07:18:29 2020
+Choosen: 12
